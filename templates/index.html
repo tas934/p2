@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App - Accueil</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, #3494e6, #ec6ead);
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #options-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #BCA9F5;
+            padding: 10px;
+            width: 100%;
+        }
+
+        #logo {
+            width: 65px;
+            height: 50px;
+            margin-left: 10px;
+        }
+
+        #welcome-container {
+		color: #F5EFFB;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #welcome-message {
+		color: #F5EFFB;
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .option-button {
+            padding: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            color: #4000FF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            margin-left: 10px;
+            width: 150px;
+        }
+
+        #create-account {
+            background-color: #E3CEF6;
+        }
+
+        #login {
+            background-color: #E3CEF6;
+        }
+
+        #left-text-container {
+            position: fixed;
+            top: 40%;
+            left: 40px;
+            color: #fff;
+            font-size: 60px;
+            font-family: Verdana, sans-serif;
+            text-align: left;
+	    opacity: 0; /* Ajout de l'opacité initiale */
+            animation: fadeInLeftText 10s forwards; /* Animation d'opacité */
+        }
+
+
+	@keyframes fadeInLeftText {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        #left-text {
+            margin-bottom: 20px;
+        }
+
+        #bottom-text {
+            color: #F5EFFB;
+            font-size: 16px;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        #image-container {
+            margin-top: auto;
+            align-self: flex-end;
+            overflow: hidden;
+            width: 728px;
+            height: 728px;
+            border-radius: 50%;
+        }
+
+        #site-image {
+            width: 100%;
+            height: auto;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .background-animation::before {
+            content: '';
+            background: linear-gradient(45deg, #3494e6, #ec6ead);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            transform: rotate(45deg);
+            animation: animateBackground 15s linear infinite;
+        }
+
+        @keyframes animateBackground {
+            0% {
+                transform: rotate(45deg) translate(0, 0);
+            }
+
+            100% {
+                transform: rotate(45deg) translate(-100%, -100%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-animation"></div>
+    <div id="options-container">
+        <img id="logo" src="https://th.bing.com/th/id/OIG.nnwwm4zGV6g54gmhix3.?pid=ImgGn.jpg" alt="Logo de l'application">
+        <div>
+            <a class="option-button" id="login" href="/login">Se connecter</a>
+            <a class="option-button" id="create-account" href="/create_account">Créer un compte</a>
+        </div>
+    </div>
+
+    <div id="left-text-container">
+        <div id="left-text">
+            Have your <br> best chat
+        </div>
+        <div id="bottom-text">
+            Bienvenue dans notre application de chat sécurisé. <br>  Chaque message est enveloppé d'une couche de confidentialité et d'intégrité. <br> La sécurité des données est notre priorité,<br> assurant des conversations en temps réel sans compromis. <br> Découvrez la puissance de la confidentialité dans la communication et <br> explorez un monde où vos messages sont des secrets bien gardés. 🌐🔒
+        </div>
+    </div>
+
+    <div id="welcome-container">
+        <h1 id="welcome-message">Bienvenue sur TFN chat</h1>
+        <p>Pour envoyer des messages, veuillez créer un compte ou vous connecter.</p>
+    </div>
+
+    <div id="image-container">
+        <img id="site-image" src="https://th.bing.com/th/id/OIG.79FSEadaDe9oQ_7Sj25z?pid=ImgGn.jpg" alt="Image du site">
+    </div>
+</body>
+
+</html>

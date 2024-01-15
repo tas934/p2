@@ -1,0 +1,104 @@
+ <!-- chat_home.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Home</title>
+    <style>
+       body {
+            background: url('https://wallpaperaccess.com/full/809177.jpg');
+             }
+        
+
+        /* la liste des utilisateurs en ligne */
+        .online-users {
+            background-color: rgba(128, 0, 128, 0.3); 
+            padding: 15px;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* bouton "Nouveau Message" à droite */
+        .new-message-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+       /* message à côté du bouton "Déconnexion" */
+        .logout-message {
+            font-size: 14px;
+            color: #610B0B;
+            margin-left: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Bouton "Nouveau Message" à droite -->
+    <button class="new-message-btn" onclick="location.href='{{ url_for('new_message') }}'">+</button>
+
+    <!-- Bouton "Déconnexion" -->
+    <button class="logout-btn" onclick="location.href='{{ url_for('logout', username=username) }}'">Déconnexion</button>
+    <p class="logout-message">Veuillez vous déconnecter pour le bon fonctionnement du site.</p>
+
+    <h1>Bienvenue, {{ username }}!</h1>
+    
+    <!-- Afficher la liste des utilisateurs en ligne -->
+    <div class="online-users">
+        <h2>Utilisateurs en ligne</h2>
+        <ul id="online-users-list">
+            {% for user in online_users %}
+                <li>{{ user[0] }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Afficher l'historique de chat avec le timestamp -->
+    <h2>Historique de Chat</h2>
+    <ul>
+        {% for entry in chat_history %}
+            <li>
+                {{ entry[0] }} à {{ entry[1] }} ({{ entry[3] }}): {{ entry[2] }}
+                <form method="post" action="{{ url_for('delete_message', message_id=entry[4]) }}">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Ajouter le formulaire pour supprimer l'historique de chat -->
+    <form method="post" action="{{ url_for('delete_chat_history', username=username) }}">
+        <button type="submit">Supprimer l'historique de chat</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('update_online_users', function(data) {
+            // Mettez à jour la liste des utilisateurs en ligne ici
+            var onlineUsersList = document.getElementById('online-users-list');
+            onlineUsersList.innerHTML = '';  // Effacez la liste actuelle
+
+            data.online_users.forEach(function(user) {
+                var listItem = document.createElement('li');
+                listItem.appendChild(document.createTextNode(user));
+                onlineUsersList.appendChild(listItem);
+            });
+        });
+    </script>
+
+</body>
+
+</html>

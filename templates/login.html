@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Se connecter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            text-align: center;
+            background: url('https://wallpaperaccess.com/full/809177.jpg');
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        #header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #header-container h1 {
+            margin: 0;
+        }
+
+        #flash-messages {
+            color: red; /* Choisir la couleur qui convient */
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="login-form" method="POST" action="{{ url_for('login') }}">
+        <div id="header-container">
+            <img id="logo" src="https://th.bing.com/th/id/OIG.nnwwm4zGV6g54gmhix3.?pid=ImgGn.jpg" alt="Logo de l'application">
+            <h1>Se connecter</h1>
+        </div>
+
+        <!-- Section pour afficher les messages flash -->
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <input type="text" name="email" placeholder="Adresse e-mail" required>
+        <input type="password" name="password" placeholder="Mot de passe" required>
+        <button type="submit">Se connecter</button>
+    </form>
+</body>
+
+</html>

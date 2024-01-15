@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Discussion</title>
+    <style>
+        body {
+            background: url('https://wallpaperaccess.com/full/809177.jpg');
+             }
+    </style>
+</head>
+
+<body>
+    <h1>Bienvenue sur le canal ! </h1>
+
+    <div id="chat-box"></div>
+
+    <div>
+        
+        <select id="recipient-dropdown">
+            
+        <input type="text" id="message-input" placeholder="Entrez votre message...">
+        <button id="send-button" onclick="sendMessage()">Envoyer</button>
+    </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+
+<script>
+    const socket = io.connect('http://127.0.0.1:5000');
+
+    // Au chargement initial de la page
+    document.addEventListener('DOMContentLoaded', function () {
+        // Écoutez l'événement 'users_list' pour mettre à jour la liste des destinataires
+        socket.on('users_list', function (data) {
+            console.log('Liste des utilisateurs en ligne :', data.users);
+            updateRecipientDropdown(data.users);
+        });
+
+        // Appelez la fonction pour récupérer la liste des utilisateurs en ligne
+        socket.emit('get_users_list');
+    });
+
+    // Recevoir les messages du serveur
+        socket.on('message', function (data) {
+            const sender = data.sender;
+            const content = data.message;
+            const timestamp = getCurrentTime();
+            appendMessage(sender, content, timestamp);
+        });
+
+        // Nouvelle fonction pour afficher les messages dans le chat-messages
+        socket.on('message', function(data) {
+            var messageDiv = document.createElement('div');
+            messageDiv.innerHTML = '<b>' + data.sender + ':</b> ' + data.message;
+            document.getElementById('chat-messages').appendChild(messageDiv);
+        });
+
+
+    function updateRecipientDropdown(usersList) {
+        const recipientDropdown = document.getElementById("recipient-dropdown");
+        recipientDropdown.innerHTML = "";
+
+        // Mise à jour de la liste des destinataires
+        usersList.forEach(function (user) {
+            const option = document.createElement("option");
+            option.value = user;
+            option.text = user;
+            recipientDropdown.add(option);
+        });
+
+        console.log('Liste des destinataires mise à jour :', usersList);
+    }
+
+    function sendMessage() {
+        const recipientDropdown = document.getElementById("recipient-dropdown");
+        const selectedRecipient = recipientDropdown.value;
+        const messageInput = document.getElementById('message-input');
+        const message = messageInput.value.trim();
+
+        if (message !== '') {
+            socket.emit('message', { recipient: selectedRecipient, message: message });
+
+            appendMessage('Moi', message, getCurrentTime());
+
+            messageInput.value = '';
+        }
+    }
+
+    function appendMessage(sender, content, timestamp) {
+        const chatBox = document.getElementById('chat-box');
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = `${sender}: ${content} (${timestamp})`;
+        chatBox.appendChild(messageDiv);
+    }
+
+    function getCurrentTime() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    }
+</script>
+</body>
+
+</html>
