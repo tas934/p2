@@ -60,7 +60,8 @@ def create_account():
                            (username, password, first_name, last_name, email))
             db.commit()
 
-        return redirect('/chat_home/' + username)
+        return redirect(url_for('chat_home', username=username))
+
 
 
     return render_template('create_account.html')
